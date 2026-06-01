@@ -78,37 +78,45 @@
           var form = document.getElementById('demoForm');
           var msg  = document.getElementById('formMsg');
           var btn  = form.querySelector('button');
-          // Enquiries are delivered here. Change the address in this one line if needed.
-          var ENDPOINT = 'https://formsubmit.co/ajax/noreply@qmsofts.com';
 
           form.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (!form.name.value.trim() || !form.email.value.trim()) {
-              show('Please add your name and email.', '#B45309'); return;
-            }
+            var fd = new FormData(form);                 // reliable field capture (incl. honeypot)
+            var name  = (fd.get('name')  || '').trim();
+            var email = (fd.get('email') || '').trim();
+            if (!name || !email) { return show('Please add your name and email.', '#B45309'); }
+
+            // Web3Forms config — delivered to the inbox this access key is registered to.
+            fd.append('access_key', 'db502856-a8e3-445d-a956-33f5015d27c3');
+            fd.append('subject', 'New demo request — qmsofts.com');
+            fd.append('from_name', 'QMSofts website');
+            fd.append('replyto', email);                 // reply goes straight to the enquirer
+
             btn.disabled = true; btn.textContent = 'Sending…';
-            var data = {
-              name: form.name.value, organisation: form.organisation.value,
-              industry: form.industry.value, email: form.email.value,
-              phone: form.phone.value, message: form.message.value,
-              _subject: 'New demo request — qmsofts.com',
-              _template: 'table', _captcha: 'false'
-            };
-            fetch(ENDPOINT, {
+
+            fetch('https://api.web3forms.com/submit', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-              body: JSON.stringify(data)
+              headers: { 'Accept': 'application/json' },
+              body: fd
             })
-            .then(function (r) { return r.json(); })
-            .then(function () {
-              form.reset();
-              btn.style.display = 'none';
-              show("Thank you — we've received your request and will be in touch within one business day.", 'var(--emerald)');
-            })
-            .catch(function () {
-              btn.disabled = false; btn.textContent = 'Request a demo';
-              show('Something went wrong. Please email us directly at noreply@qmsofts.com.', '#B45309');
-            });
+              .then(function (r) {
+                return r.json().catch(function () { return {}; })
+                        .then(function (j) { return j; });
+              })
+              .then(function (j) {
+                if (j && j.success) {
+                  form.reset();
+                  btn.style.display = 'none';
+                  show("Thank you — we've received your request and will be in touch within one business day.", 'var(--emerald)');
+                } else {
+                  btn.disabled = false; btn.textContent = 'Request a demo';
+                  show((j && j.message) || 'Sorry, that didn\u2019t go through. Please email us directly at noreply@qmsofts.com.', '#B45309');
+                }
+              })
+              .catch(function () {
+                btn.disabled = false; btn.textContent = 'Request a demo';
+                show('Could not reach the form service. Please email us directly at noreply@qmsofts.com.', '#B45309');
+              });
           });
           function show(t, c) { msg.textContent = t; msg.style.color = c; msg.style.display = 'block'; }
         })();
