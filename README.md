@@ -23,15 +23,16 @@ changing either).
 
 ## Products featured
 
-Seven platforms, each AI-built, multi-tenant and cloud-hosted:
+Eight platforms, each AI-built, multi-tenant and cloud-hosted:
 
 1. **QMSoft School OS** — schools (admissions, attendance, exams, fees, payroll; bilingual EN/हिंदी)
 2. **Dawa** — pharmacies (batch/expiry stock, OCR capture, purchase→sales, analytics)
 3. **Restel** — hotels (PMS, bookings, housekeeping, POS, OTA sync)
-4. **Nidan** — pathology labs (patients, test catalogue, samples, reports, billing)
-5. **QMH** — hospitals & nursing homes *(added — see below)*
-6. **QMO** — distributors (order portal, AI order-parsing, dispatch, margins)
-7. **QMfg** — small factories (BOM→production→finished goods, full finance/P&L/GST)
+4. **Swad** — restaurants, cafes & QSRs (table orders, kitchen display, QR ordering, GST billing, day close)
+5. **Nidan** — pathology labs (patients, test catalogue, samples, reports, billing)
+6. **QMH** — hospitals & nursing homes
+7. **QMO** — distributors (order portal, AI order-parsing, dispatch, margins)
+8. **QMfg** — small factories (BOM→production→finished goods, full finance/P&L/GST)
 
 ## What QMH is (the new product)
 
